@@ -1,44 +1,82 @@
-const express = require('express');
-const SECREATKEY = "qwert@123";
+const express = require("express");
 const app = express();
-const bodyparser = require('body-parser');
-const jwt = require('jsonwebtoken');
+const middleware = require('./middleware');
+const api = require('./api');
 
-const PORT = process.env.PORT || 3001
-app.use(bodyparser.json())
+app.use(express.json());
 
+app.get('/',api.homeApi);
+app.post('/signup',middleware.secondmiddleware,api.signupApi);
+app.get('/login',api.loginApi);
+app.get('/profile',api.profile);
 
-app.post('/login',(req,res)=>{
-  const {username,password} = req.body
-  console.log(req.body);
-  if(username === "codes" && password === "code@123"){
-    const user = {
-      username,
-      age:22
-    }
- 
-
-    jwt.sign({user},SECREATKEY,(error,token)=>{
-      if(error){
-        res.sendStatus(403)
-      }else{
-        res.json({
-          token
-        })
-      }
-    })
-  
- 
-  }else{
-    res.sendStatus(404)
-  }
-
-
-})
+module.exports = ({ port, cb }) => {
+  app.listen(port, cb);
+};
 
 
 
-app.listen(PORT, () => console.log(`Your Server running is Port`));
+
+// const express = require('express');
+// const app = express();
+// const PORT = process.env.PORT || 3001;
+// const bodyparser = require('body-parser');
+// const jwt = require('jsonwebtoken');
+// const SECREATKEY = "quert@123";
+// app.use(bodyparser.json());
+
+// app.post('/login',(req,res)=>{
+//   console.log(req.body)
+//   const {username,password} = req.body
+
+//   if(username === "farhan" && password === "code@123"){
+//     const user = {
+//       username,
+//       age:22,
+//       id:121
+//     }
+
+//     jwt.sign({user},SECREATKEY,(error,token)=>{
+//       if(error){
+//         res.sendStatus(403)
+//       }else{
+//         res.json({
+//           token
+//         })
+//       }
+//     })
+    
+//   }else{
+//     res.sendStatus(404)
+//   }
+// })
+
+
+
+
+// app.listen(PORT, ()=>console.log(`Your Running port on 3001`));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
